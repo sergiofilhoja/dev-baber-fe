@@ -10,6 +10,8 @@ import {
     SignMessageButtonTextBold
 } from './styles';
 
+import Api from '../../Api';
+
 import SignInput from '../../components/SignInput';
 
 import BarberLogo from '../../assets/barber.svg';
@@ -22,8 +24,19 @@ export default () => {
 
     const navigation = useNavigation();
 
-    const handleSignClick = () => {
+    const handleSignClick = async () => {
+        if (emailField != '' && passwordlField != '') {
 
+            let json = await Api.signIn(emailField, passwordlField);
+            
+            if (json.token) {
+                alert("Deu certo!");
+            } else {
+                alert("E-mail e/ou senha incorretos!");
+            }
+        } else {
+            alert("Preencha os campos!");
+        }
     }
     
     const handleMessageButtomClick = () => {
