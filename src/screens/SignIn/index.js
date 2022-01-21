@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { UserContext } from '../../contexts/UserContext';
+
 import { 
     Container,
     InputArea,
@@ -19,23 +23,34 @@ import EmailIcon from '../../assets/email.svg';
 import LockIcon from './../../assets/lock.svg';
 
 export default () => {
+    const { dispatch: userDispatch } = useContext(UserContext);
     const [emailField, setEmailField] = useState('');
     const [passwordlField, setpasswordlField] = useState('');
 
     const navigation = useNavigation();
 
     const handleSignClick = async () => {
-        if (emailField != '' && passwordlField != '') {
-
-            let json = await Api.signIn(emailField, passwordlField);
-            
-            if (json.token) {
-                alert("Deu certo!");
+        if (emailField.trim() !== '' && passwordlField.trim() !== '') {
+            const response = await Api.signIn(emailField, passwordlField);
+        
+            if (response.token) {
+                await AsyncStorage.setItem('token', response.token);
+        
+                userDispatch({
+                    type: 'setAvatar',
+                    payload: {
+                        avatar: response.data.avatar,
+                    },
+                });
+        
+                navigation.reset({
+                    routes: [{name: 'MainTab'}],
+                });
             } else {
-                alert("E-mail e/ou senha incorretos!");
+                alert('E-mail e/ou senha não correspondem!');
             }
-        } else {
-            alert("Preencha os campos!");
+            } else {
+            alert('Preencha todos os campos!');
         }
     }
     

@@ -2,39 +2,39 @@ const BASE_API = 'https://api.b7web.com.br/devbarber/api';
 
 export default {
     checkToken: async (token) => {
-        const req = await fetch(`${BASE_API}/auth/refresh`, {
+        const request = await fetch(`${BASE_API}/auth/refresh`, {
             method: 'POST',
-            header: {
+            headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({token})
+            body: JSON.stringify({token}),
         });
-        const json = await req.json();
-        return json;
+        const response = await request.json();
+        return response;
     },
     signIn: async (email, password) => {
-        const req = await fetch(`${BASE_API}/auth/login`, {
+        const request = await fetch(`${BASE_API}/auth/login`, {
             method: 'POST',
-            header: {
+            headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify({email, password}),
         });
-        const json = await req.json();
-        return json;
+        const response = await request.json();
+        return response;
     },
     signUp: async (name, email, password) => {
-        const req = await fetch(`${BASE_API}/user`, {
+        const request = await fetch(`${BASE_API}/auth/login`, {
             method: 'POST',
-            header: {
+            headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({name, email, password})
+            body: JSON.stringify({name, email, password}),
         });
-        const json = await req.json();
-        return json;
+        const response = await request.json();
+        return response;
     }
 };
